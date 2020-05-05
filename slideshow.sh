@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #start slideshow
-feh --recursive --randomize --fullscreen  --quiet --hide-pointer --slideshow-delay 10 /media/pi/300GB/USA\ 2018\ Photos
+feh --recursive --randomize --fullscreen  --quiet --hide-pointer --slideshow-delay 10 "/media/pi/galery" &
