@@ -1,0 +1,7 @@
+open lightdm.conf file. 
+sudo nano /etc/lightdm/lightdm.conf
+
+in section [] search for line "xserver-command=X"
+replace this line with "xserver-command=X -s 0 dpms"
+
+save and close file
