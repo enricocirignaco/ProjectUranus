@@ -13,8 +13,8 @@ sudo apt install exfat-utils -y
 # start slideshow
 # end slideshow
 # update system once a month
-CRONJOB_START = " * * * /home/pi/Documents/mambocat/start_slideshow.sh > /dev/null 2>&1"
-CRONJOB_END = " * * * /home/pi/Documents/mambocat/end_slideshow.sh > /dev/null 2>&1"
+CRONJOB_START = " * * * /home/pi/Documents/mambocat/slideshow/start_slideshow.sh > /dev/null 2>&1"
+CRONJOB_END = " * * * /home/pi/Documents/mambocat/slideshow/end_slideshow.sh > /dev/null 2>&1"
 CRONJOB_UPDATE = "0 0 1 * * root (apt -y update && apt -y  upgrade) > /dev/null 2>&1"
 read -p "Enter slideshow start time (hh mm): " START_TIME
 read -p "Enter slideshow end time (hh mm): " END_TIME
