@@ -50,7 +50,6 @@ Then you can add a Job like explained below.
 
 The Following cronjobs are created in the setup process:
 ```
-@reboot /home/pi/Documents/ProjectEuropa/start_slideshow.sh >/dev/null
 0 18 * * * /home/pi/Documents/ProjectEuropa/start_slideshow.sh > /dev/null 2>&1
 0 23 * * * /home/pi/Documents/ProjectEuropa/end_slideshow.sh > /dev/null 2>&1
 0 0 1 * * root (apt -y update && apt -y  upgrade) > /dev/null 2>&1
