@@ -8,6 +8,6 @@ export DISPLAY=:0.0
 feh --recursive --randomize --fullscreen  --zoom fill --quiet --hide-pointer --slideshow-delay 10 "/media/pi/galery" &
 #wait for slideshow to start
 #sleep 1
-#turn on hdmi
+#turn on hdmi 1
 vcgencmd display_power 1
 
