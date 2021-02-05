@@ -55,3 +55,4 @@ The Following cronjobs are created in the setup process:
 0 0 1 * * root (apt -y update && apt -y  upgrade) > /dev/null 2>&1
 ```
 
+#### FTP Server
