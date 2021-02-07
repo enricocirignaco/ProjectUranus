@@ -20,17 +20,86 @@ The following tasks are executed when the setup script run:
 * the needed cronjobs are added to crontab
 * the system screensaver is disabled
 
+```bash
+# slideshow/setup_wallpaper.sh
+#!/bin/bash
+
+# update system
+sudo apt-get update
+sudo apt-get upgrade
+
+# install feh and exfat utilities
+sudo apt install feh -y
+sudo apt install exfat-fuse -y
+sudo apt install exfat-utils -y
+
+# Add following cronjobs to crontab:
+# start slideshow
+# end slideshow
+# update system once a month
+CRONJOB_START = " * * * /home/pi/Documents/mambocat/slideshow/start_slideshow.sh > /dev/null 2>&1"
+CRONJOB_END = " * * * /home/pi/Documents/mambocat/slideshow/end_slideshow.sh > /dev/null 2>&1"
+CRONJOB_UPDATE = "0 0 1 * * root (apt -y update && apt -y  upgrade) > /dev/null 2>&1"
+read -p "Enter slideshow start time (hh mm): " START_TIME
+read -p "Enter slideshow end time (hh mm): " END_TIME
+#write out current crontab
+sudo crontab -u pi -l > mycron
+#echo new cron into cron file
+echo "$START_TIME$CRONJOB_START" >> mycron
+echo "$END_TIME$CRONJOB_END" >> mycron
+echo "$CRONJOB_UPDATE" >> mycron
+#install new cron file
+sudo crontab -u pi mycron
+rm mycron
+
+# turn off screensaver
+sudo sed -i 's/# xserver-command=X/xserver-command=X -s 0 dpms/' /etc/lightdm/lightdm.conf
+
+
+```
+
 #### Start script
 The following tasks are executed when the start script run:
 * the external storage device is mounted
 * the imager viewer feh is started with a bunch of settings
 * the HDMI interface is turned on with the `vcgencmd display_power 1` command
 
+```bash
+# slideshow/start_slideshow.sh
+#!/bin/bash
+
+#mount HDD
+sudo mount -t exfat /dev/sda2 /media/pi
+#start slideshow
+# variable DISPLAY must be defined in order for the script to work with crontab
+export DISPLAY=:0.0
+feh --recursive --randomize --fullscreen  --zoom fill --quiet --hide-pointer --slideshow-delay 10 "/media/pi/galery" &
+#wait for slideshow to start
+#sleep 1
+#turn on hdmi 1
+vcgencmd display_power 1
+
+
+```
+
 #### End script
 The following tasks are executed when the end script run:
 * The HDMI interface is turned off
 * feh process is killed
 * the external storage device is unmounted to save energy
+
+```bash
+# slideshow/end_slideshow.sh
+#!/bin/bash
+
+#turn off hdmi
+vcgencmd display_power 0
+#kill feh processes
+pkill feh
+#umount HDD
+sudo umount /dev/sda2
+
+```
 
 #### Scheduler
 In order to start and stop the slideshow at the desired time the tool [cron](https://man7.org/linux/man-pages/man8/cron.8.html) is used.
@@ -55,4 +124,4 @@ The Following cronjobs are created in the setup process:
 0 0 1 * * root (apt -y update && apt -y  upgrade) > /dev/null 2>&1
 ```
 
-#### FTP Server
+
