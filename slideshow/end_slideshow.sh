@@ -5,4 +5,4 @@ vcgencmd display_power 0
 #kill feh processes
 pkill feh
 #umount HDD
-sudo umount /dev/sda2
+sudo umount /dev/sda1

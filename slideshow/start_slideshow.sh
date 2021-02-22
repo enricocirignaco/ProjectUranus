@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #mount HDD
-sudo mount -t exfat /dev/sda2 /media/pi
+sudo mount -t exfat /dev/sda1 /media/pi
 #start slideshow
 # variable DISPLAY must be defined in order for the script to work with crontab
 export DISPLAY=:0.0
