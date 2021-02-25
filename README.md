@@ -4,7 +4,6 @@ Apache Webserver to host Mambocat.ch and Wallpaper display hosted on a Raspberry
 ## Slideshow
 This program show a slideshow of images stored on an external storage device on fullscreen on the Raspberry.
 The slideshow turn on and off at the desired time.
-### How to use
 
 ### How it works
 The imager viewer [feh](https://feh.finalrewind.org/) is used to display the foto gallery.
@@ -22,6 +21,7 @@ The following tasks are executed when the setup script run:
 
 ```bash
 # slideshow/setup_wallpaper.sh
+
 #!/bin/bash
 
 # update system
@@ -66,14 +66,15 @@ The following tasks are executed when the start script run:
 
 ```bash
 # slideshow/start_slideshow.sh
+
 #!/bin/bash
 
 #mount HDD
-sudo mount -t exfat /dev/sda2 /media/pi
+sudo mount -t exfat /dev/sda1 /media/pi
 #start slideshow
 # variable DISPLAY must be defined in order for the script to work with crontab
 export DISPLAY=:0.0
-feh --recursive --randomize --fullscreen  --zoom fill --quiet --hide-pointer --slideshow-delay 10 "/media/pi/galery" &
+feh --recursive --randomize --fullscreen  --zoom fill --quiet --hide-pointer --auto-rotate --slideshow-delay 10 "/media/pi/galery" &
 #wait for slideshow to start
 #sleep 1
 #turn on hdmi 1
@@ -90,6 +91,7 @@ The following tasks are executed when the end script run:
 
 ```bash
 # slideshow/end_slideshow.sh
+
 #!/bin/bash
 
 #turn off hdmi
@@ -97,7 +99,7 @@ vcgencmd display_power 0
 #kill feh processes
 pkill feh
 #umount HDD
-sudo umount /dev/sda2
+sudo umount /dev/sda1
 
 ```
 
@@ -119,9 +121,25 @@ Then you can add a Job like explained below.
 
 The Following cronjobs are created in the setup process:
 ```
-0 18 * * * /home/pi/Documents/ProjectEuropa/start_slideshow.sh > /dev/null 2>&1
-0 23 * * * /home/pi/Documents/ProjectEuropa/end_slideshow.sh > /dev/null 2>&1
+0 18 * * * /home/pi/Documents/mambocat/slideshow/start_slideshow.sh > /dev/null 2>&1
+0 23 * * * /home/pi/Documents/mambocat/slideshow/end_slideshow.sh > /dev/null 2>&1
 0 0 1 * * root (apt -y update && apt -y  upgrade) > /dev/null 2>&1
 ```
 
+## Webserver
 
+Webserver based on Apache 2. The website files are updated with RapidWeaver ‪8 over sftp
+
+#### Dependencies
+* Apache 2
+* PHP
+* RapidWeaver
+* sftp
+
+### Installation
+Follow the official [guide](https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md) from the Raspberry Foundation
+
+### Setup
+1. open port 80 and 443 for the Raspberry
+2. configure RapidViewer
+3. Sftp Server
